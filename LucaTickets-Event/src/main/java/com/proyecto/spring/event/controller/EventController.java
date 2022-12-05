@@ -39,6 +39,4 @@ public class EventController {
 	{	
 		return ResponseEntity.of(Optional.of(eventService.addEvent(event)));
 	}
-	
-	
 }

@@ -1,6 +1,7 @@
 package com.proyecto.spring.event.model;
 
-import java.util.Date;
+
+import java.time.LocalDate;
 
 import org.springframework.data.annotation.Id;
 
@@ -14,7 +15,8 @@ public class Event{
 	public Long id;
 	
 	private String nombre, corta, extendida, foto, normas;
-	private Date fecha;
-	private int hora, minimo, maximo;
+	private LocalDate fecha;
+	private LocalDate hora, minimo, maximo;
+	private Double precio;
 	private Recinto sala;
 }

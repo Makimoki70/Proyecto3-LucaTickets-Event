@@ -1,7 +1,9 @@
 package com.proyecto.spring.event.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +19,10 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 	
-	@PostMapping("/{id}/add")
-	public void addEvent(@PathVariable Long id, @RequestBody Event event)
-	{
-		
-		eventService.addEvent(event);
-		
+	@PostMapping("/add")
+	public ResponseEntity<Event> addEvent(@RequestBody Event event)
+	{	
+		return ResponseEntity.of(Optional.of(eventService.addEvent(event)));
 	}
 	
 	

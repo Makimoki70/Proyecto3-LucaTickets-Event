@@ -2,6 +2,7 @@ package com.proyecto.spring.event.model.response;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public @Data class EventResponse implements Serializable {
 	
 	private String nombre, corta, extendida, foto, normas;
 	private LocalDate fecha;
-	private LocalDate hora, minimo, maximo;
+	private LocalTime hora, minimo, maximo;
 	private Double precio;
 	private Recinto sala;
 	

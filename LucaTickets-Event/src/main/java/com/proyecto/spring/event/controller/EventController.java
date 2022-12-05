@@ -12,13 +12,28 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.spring.event.model.Event;
 import com.proyecto.spring.event.service.EventService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/event")
+@Tag(name = "event", description = "the event API")
 public class EventController {
 	
 	@Autowired
 	private EventService eventService;
 	
+	
+	@Operation(summary = "Añadir evento", description = "Añade un evento a la BBDD, devuelve un objeto Event", tags= {"event"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Evento creado", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = @Content),
+			})
 	@PostMapping("/add")
 	public ResponseEntity<Event> addEvent(@RequestBody Event event)
 	{	

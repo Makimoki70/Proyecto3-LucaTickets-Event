@@ -1,15 +1,24 @@
 package com.proyecto.spring.event.controller;
 
-import java.util.Optional;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+import java.util.Optional;
+
+
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.spring.event.model.Event;
+import com.proyecto.spring.event.model.response.EventResponse;
 import com.proyecto.spring.event.service.EventService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +35,13 @@ public class EventController {
 	
 	@Autowired
 	private EventService eventService;
-	
+
+	@GetMapping("/")
+	public List<EventResponse> getAllEvents(){
+		
+		return EventResponse.of(eventService.showAllEvents());
+		
+	}
 	
 	@Operation(summary = "Añadir evento", description = "Añade un evento a la BBDD, devuelve un objeto Event", tags= {"event"})
 	@ApiResponses(value = {

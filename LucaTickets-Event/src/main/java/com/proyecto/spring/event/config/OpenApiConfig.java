@@ -25,6 +25,4 @@ public class OpenApiConfig {
                 .description("Descripcion del microservicio Event")
                 .url("https://miproyecto.es"));
     }
-	
-
 }

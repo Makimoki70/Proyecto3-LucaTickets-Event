@@ -28,7 +28,11 @@ public class EventService {
 		return eventRepository.findAll();
 	}
 	
-	public List<Event> getEventName( String name) {
-		return eventRepository.getEventName(name) ;
+	public List<Event> getEventsByName( String name) {
+		return eventRepository.getEventsByName(name) ;
+	}
+	
+	public List<Event> getEventByType(String tipo){
+		return eventRepository.getEventsByType(tipo);
 	}
 }

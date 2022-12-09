@@ -21,4 +21,5 @@ public class Event{
 	private LocalTime hora, minimo, maximo;
 	private Double precio;
 	private Recinto sala;
+	
 }

@@ -3,6 +3,8 @@ package com.proyecto.spring.event.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,7 @@ import com.proyecto.spring.event.model.response.EventResponse;
 import com.proyecto.spring.event.service.EventService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,11 +38,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/event")
 @Tag(name = "event", description = "the event API")
 public class EventController {
+	private static final Logger logger = LoggerFactory.getLogger(EventController.class);
 	
 	@Autowired
 	private EventService eventService;
 
-	
 	@Operation(summary = "Eliminar un evento por Id", description = "Elimina un evento de la BDD, devuelve un opcional", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Evento eliminado", content = {
@@ -67,9 +70,8 @@ public class EventController {
 	public Optional<Event> updateEvent(@RequestBody Event event){
 		return eventService.updateEvent(event);
 	}
-	
-	
-	@Operation(summary = "Mostrar todos los eventos disponibles", description = "Añade un evento a la BBDD, devuelve un objeto Event", tags= {"event"})
+  
+	@Operation(summary = "Mostrar todos los eventos disponibles", description = "Busca todos los eventos de la BDD, devuelve una lista de Event", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
@@ -78,14 +80,10 @@ public class EventController {
 			})
 	@GetMapping("/")
 	public List<EventResponse> getAllEvents(){
-		
 		return EventResponse.of(eventService.showAllEvents());
-		
 	}
 	
-	
-	
-	@Operation(summary = "Añadir evento", description = "Añade un evento a la BBDD, devuelve un objeto Event", tags= {"event"})
+	@Operation(summary = "Añadir evento", description = "Añade un evento a la BDD, devuelve un objeto Event", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Evento creado", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
@@ -96,11 +94,32 @@ public class EventController {
 	public ResponseEntity<Event> addEvent(@RequestBody Event event)
 	{	
 		return ResponseEntity.of(Optional.of(eventService.addEvent(event)));
-
 	}
-	
-	
-	
-	
-	
+
+	@Operation(summary = "Mostrar eventos que coincidan con un nombre dado", description = "Busca eventos en la BDD dado un nombre, devulve una lista de Event", tags= {"event"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			})
+	@GetMapping("/name/{name}")
+	public List<EventResponse> getEventsByName(@PathVariable String name) {
+		return EventResponse.of(eventService.getEventsByName(name));
+	}
+
+	@Operation(summary = "Mostrar eventos que coincidan con un tipo de recinto dado", description = "Busca eventos en la BDD dado un tipo de recinto, devuelve una lista de  Event", tags= {"event"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			})
+	@GetMapping("/tipo/{tipo}")
+	public List<Event> getEventsByType(
+			@Parameter(description = "Tipo del lugar del evento", required=true) 
+			@PathVariable String tipo){
+		logger.info("------ readTipo (GET) ");
+		return eventService.getEventByType(tipo);
+	}
 }

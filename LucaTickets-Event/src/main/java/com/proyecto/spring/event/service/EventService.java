@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.proyecto.spring.event.model.Event;
 import com.proyecto.spring.event.repository.EventRepository;
 
+
 @Service
 public class EventService {
 	
@@ -55,19 +56,20 @@ public class EventService {
 				
 	}
 
-
 	public Event addEvent(Event event)
 	{		
 		return eventRepository.save(event);
-
 	}
 	
 	public List<Event> showAllEvents() {
-		
 		return eventRepository.findAll();
-		
-		
-		
 	}
-
+	
+	public List<Event> getEventsByName( String name) {
+		return eventRepository.getEventsByName(name) ;
+	}
+	
+	public List<Event> getEventByType(String tipo){
+		return eventRepository.getEventsByType(tipo);
+	}
 }

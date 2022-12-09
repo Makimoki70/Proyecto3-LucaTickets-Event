@@ -21,39 +21,20 @@ public class EventService {
 	private EventRepository eventRepository;	
 	
 	public Optional<Event> deleteById(Long id) {
-		
 		Optional<Event> event  = eventRepository.findById(id);
-		
 		if (!Optional.of(event).isEmpty()) {
-			
-			eventRepository.deleteById(id);
-								
+			eventRepository.deleteById(id);					
 		}		
-		
-		
-		return event;
-		
-				
-		
+		return event;	
 	}
-	
+
 	public Optional<Event> updateEvent(Event event){
-		
-		
-		
 		Optional<Event> currentEvent  = eventRepository.findById(event.getId());
-		
 		if (!currentEvent.isEmpty())
 		{
-			
 			eventRepository.save(event);
-			
 		}
-		
 		return currentEvent;
-		
-	    	
-				
 	}
 
 	public Event addEvent(Event event)

@@ -22,7 +22,7 @@ public class EventService {
 	
 	public Optional<Event> deleteById(Long id) {
 		Optional<Event> event  = eventRepository.findById(id);
-		if (!Optional.of(event).isEmpty()) {
+		if (!Optional.ofNullable(event).isEmpty()) {
 			eventRepository.deleteById(id);					
 		}		
 		return event;	
@@ -37,20 +37,30 @@ public class EventService {
 		return currentEvent;
 	}
 
-	public Event addEvent(Event event)
+	public Optional<Event> addEvent(Event event)
 	{		
-		return eventRepository.save(event);
+		Optional<Event> currentEvent  = eventRepository.findById(event.getId());
+		if (currentEvent.isEmpty())
+		{
+			currentEvent = Optional.of(eventRepository.save(event));
+		}else currentEvent = Optional.ofNullable(null);
+		
+		return currentEvent;
 	}
 	
 	public List<Event> showAllEvents() {
 		return eventRepository.findAll();
 	}
 	
-	public List<Event> getEventsByName( String name) {
-		return eventRepository.getEventsByName(name) ;
+	public Optional<List<Event>> getEventsByName( String name) {
+		List<Event> events = eventRepository.getEventsByName(name);
+		if (events.isEmpty()) return Optional.ofNullable(null);
+		return Optional.of(events);
 	}
 	
-	public List<Event> getEventByType(String tipo){
-		return eventRepository.getEventsByType(tipo);
+	public Optional<List<Event>> getEventsByType(String tipo){
+		List<Event> events = eventRepository.getEventsByType(tipo);
+		if (events.isEmpty()) return Optional.ofNullable(null);
+		return Optional.of(events);
 	}
 }

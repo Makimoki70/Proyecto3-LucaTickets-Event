@@ -1,6 +1,7 @@
 package com.proyecto.spring.event.controller;
 
 
+import java.net.URI;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.proyecto.spring.event.controller.error.EventNotFoundException;
 import com.proyecto.spring.event.model.Event;
 import com.proyecto.spring.event.model.response.EventResponse;
 import com.proyecto.spring.event.service.EventService;
@@ -51,11 +54,9 @@ public class EventController {
 			})
 	@DeleteMapping("/{id}")
 	public Optional<Event> deleteById(@PathVariable Long id){
+		Event event = eventService.deleteById(id).orElseThrow(() -> new EventNotFoundException(id));
 		
-		Optional<Event> event = eventService.deleteById(id);
-		
-		return event;
-		
+		return Optional.ofNullable(event);
 	}
 	
 	@Operation(summary = "Modificar eventos", 
@@ -66,10 +67,12 @@ public class EventController {
 			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = @Content),
 			})
 	@PutMapping("/update")
-	public Optional<Event> updateEvent(@RequestBody Event event){
-		return eventService.updateEvent(event);
+	public ResponseEntity<Event> updateEvent(@RequestBody Event event){
+		Event result = eventService.updateEvent(event).orElseThrow(() -> new EventNotFoundException(event.getId()));
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
+		return ResponseEntity.created(location).body(result);
 	}
-  
+ 
 	@Operation(summary = "Mostrar todos los eventos disponibles", description = "Busca todos los eventos de la BDD, devuelve una lista de Event", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {
@@ -92,7 +95,9 @@ public class EventController {
 	@PostMapping("/add")
 	public ResponseEntity<Event> addEvent(@RequestBody Event event)
 	{	
-		return ResponseEntity.of(Optional.of(eventService.addEvent(event)));
+		Event result = eventService.addEvent(event).orElseThrow(() -> new EventNotFoundException(event.getId()));
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
+		return ResponseEntity.created(location).body(result);
 	}
 
 	@Operation(summary = "Mostrar eventos que coincidan con un nombre dado", description = "Busca eventos en la BDD dado un nombre, devulve una lista de Event", tags= {"event"})
@@ -104,7 +109,9 @@ public class EventController {
 			})
 	@GetMapping("/name/{name}")
 	public List<EventResponse> getEventsByName(@PathVariable String name) {
-		return EventResponse.of(eventService.getEventsByName(name));
+		Optional<List<Event>> events = eventService.getEventsByName(name);
+		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException()));
+		return eventsResponse;
 	}
 
 	@Operation(summary = "Mostrar eventos que coincidan con un tipo de recinto dado", description = "Busca eventos en la BDD dado un tipo de recinto, devuelve una lista de  Event", tags= {"event"})
@@ -115,10 +122,13 @@ public class EventController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
 			})
 	@GetMapping("/tipo/{tipo}")
-	public List<Event> getEventsByType(
+	public List<EventResponse> getEventsByType(
 			@Parameter(description = "Tipo del lugar del evento", required=true) 
 			@PathVariable String tipo){
 		logger.info("------ readTipo (GET) ");
-		return eventService.getEventByType(tipo);
+		Optional<List<Event>> events = eventService.getEventsByType(tipo);
+		logger.info("----------------------- " + events);
+		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException()));
+		return eventsResponse;
 	}
 }

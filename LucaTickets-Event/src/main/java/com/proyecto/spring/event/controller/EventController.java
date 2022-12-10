@@ -33,6 +33,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * 
+ * Nombre de clase: EventController. Descripcion: Controlador del microservicio Event.
+ * Implementa el metodo add a la base de datos, las busquedas por nombre y tipo de evento.
+ * Fecha: 09/12/2022
+ * 
+ * @author Alberto Egea y Joel Pascual
+ * @version 0.2
+ * @since 0.1
+ * 
+ */
+
 @RestController
 @RequestMapping("/event")
 @Tag(name = "event", description = "the event API")
@@ -51,13 +63,13 @@ public class EventController {
 			})
 	@DeleteMapping("/{id}")
 	public Optional<Event> deleteById(@PathVariable Long id){
-		
+
 		Optional<Event> event = eventService.deleteById(id);
-		
+
 		return event;
-		
+
 	}
-	
+
 	@Operation(summary = "Modificar eventos", 
 			description = "Modifica un evento, si este se encuentra", tags= {"search"})
 	@ApiResponses(value = {
@@ -69,7 +81,7 @@ public class EventController {
 	public Optional<Event> updateEvent(@RequestBody Event event){
 		return eventService.updateEvent(event);
 	}
-  
+	
 	@Operation(summary = "Mostrar todos los eventos disponibles", description = "Busca todos los eventos de la BDD, devuelve una lista de Event", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {

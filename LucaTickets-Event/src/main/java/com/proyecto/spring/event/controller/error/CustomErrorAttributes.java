@@ -13,13 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-//Se usará para alterar el formato propio de JSOn para los errores
-//Por ejemplo, aqui se accede cuando se pone mal la URI
-// Ejemplos
-//     PUT de valor no existente
-//     GET de valor no existente
-//El acceso es automatico
-
 @Component
 public class CustomErrorAttributes extends DefaultErrorAttributes {
 	private static final Logger logger = LoggerFactory.getLogger(CustomErrorAttributes.class);

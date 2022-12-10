@@ -21,7 +21,7 @@ import com.proyecto.spring.event.model.Event;
  * 
  * */
 public interface EventRepository extends MongoRepository<Event,Long>{
-	@Query(value="{'nombre': ?0}")
+	@Query(value="{'nombre': {$regex: ?0}}")
 	public List<Event> getEventsByName(String name);
 	
 	@Query(value="{'sala.tipoRecinto': ?0}")

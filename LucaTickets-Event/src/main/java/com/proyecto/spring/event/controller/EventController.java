@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -16,7 +15,6 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +31,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * 
+ * Nombre de clase: EventController. Descripcion: Controlador del microservicio Event.
+ * Implementa el metodo add a la base de datos, las busquedas por nombre y tipo de evento.
+ * Fecha: 09/12/2022
+ * 
+ * @author Alberto Egea y Joel Pascual
+ * @version 0.2
+ * @since 0.1
+ * 
+ */
+
 @RestController
 @RequestMapping("/event")
 @Tag(name = "event", description = "the event API")
@@ -42,34 +52,6 @@ public class EventController {
 	@Autowired
 	private EventService eventService;
 
-	@Operation(summary = "Eliminar un evento por Id", description = "Elimina un evento de la BDD, devuelve un opcional", tags= {"event"})
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Evento eliminado", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
-			@ApiResponse(responseCode = "400", description = "Evento no encontrado ", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
-			})
-	@DeleteMapping("/{id}")
-	public Optional<Event> deleteById(@PathVariable Long id){
-		
-		Optional<Event> event = eventService.deleteById(id);
-		
-		return event;
-		
-	}
-	
-	@Operation(summary = "Modificar eventos", 
-			description = "Modifica un evento, si este se encuentra", tags= {"search"})
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Lista devuelta", content = {
-					@Content(mediaType = "application/json", schema = @Schema(implementation = EventResponse.class)) }),
-			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = @Content),
-			})
-	@PutMapping("/update")
-	public Optional<Event> updateEvent(@RequestBody Event event){
-		return eventService.updateEvent(event);
-	}
-  
 	@Operation(summary = "Mostrar todos los eventos disponibles", description = "Busca todos los eventos de la BDD, devuelve una lista de Event", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {

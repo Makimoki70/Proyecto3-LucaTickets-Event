@@ -24,12 +24,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 
 @ControllerAdvice
-//Realmente seria mejor usar  @RestControllerAdvice aunque aqui es lo mismo
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	// @ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(EventNotFoundException.class)
 	public void springHandleNotFound(HttpServletResponse response) throws IOException {
-		logger.info("------ StudentNotFoundException() ");
+		logger.info("------ EventNotFoundException() ");
 		response.sendError(HttpStatus.NOT_FOUND.value());
 	}
 
@@ -62,7 +61,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 		customError.setMessage(messages);
 		
 		//Para recoger el path y simular de forma completa los datos originales
-		// request.getDescription(false) ---> uri=/students
+		// request.getDescription(false) ---> uri=/Events
 		String uri = request.getDescription(false);
 		uri = uri.substring(uri.lastIndexOf("=")+1);
 		customError.setPath(uri);

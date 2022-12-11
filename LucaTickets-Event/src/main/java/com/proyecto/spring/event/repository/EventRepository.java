@@ -25,7 +25,4 @@ public interface EventRepository extends MongoRepository<Event,Long>{
 	
 	@Query(value="{'sala.tipoRecinto': ?0}")
 	public List<Event> getEventsByType(String type);
-	
-	@Query(value="{'id': ?0}")
-	public List<Event> getEventsByid(long id);
 }

@@ -134,8 +134,9 @@ public class EventController {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
 			})
 	@GetMapping("/{id}")
-	public List<EventResponse> getEventsById(@PathVariable long id) {
-		return EventResponse.of(eventService.getEventsById(id));
+	public EventResponse getEventsById(@PathVariable long id) {
+		Event result = eventService.getEventsById(id).orElseThrow(() -> new EventNotFoundException());
+		return EventResponse.of(result);
 	}
 
 	@Operation(summary = "Mostrar eventos que coincidan con un tipo de recinto dado", description = "Busca eventos en la BDD dado un tipo de recinto, devuelve una lista de  Event", tags= {"event"})

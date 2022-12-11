@@ -24,6 +24,7 @@ import lombok.Data;
 public @Data class EventResponse implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	public long id;
 	
 	/**
 	 * 
@@ -105,6 +106,7 @@ public @Data class EventResponse implements Serializable {
 	public static EventResponse of (Event event) {
 		EventResponse eventResponse = new EventResponse();
 		
+		eventResponse.setId(event.id);
 		eventResponse.setNombre(event.getNombre());
 		eventResponse.setCorta(event.getCorta());
 		eventResponse.setExtendida(event.getExtendida());

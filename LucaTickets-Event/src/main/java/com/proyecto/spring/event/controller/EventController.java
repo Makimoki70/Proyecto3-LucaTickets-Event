@@ -107,16 +107,16 @@ public class EventController {
 		return ResponseEntity.of(Optional.of(eventService.addEvent(event)));
 	}
 
-	@Operation(summary = "Mostrar eventos que coincidan con un nombre dado", description = "Busca eventos en la BDD dado un nombre, devulve una lista de Event", tags= {"event"})
+	@Operation(summary = "Mostrar eventos que coincidan con un id dado", description = "Busca eventos en la BDD dado un id, devulve una lista de Event", tags= {"id"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
 			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = {
 					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
 			})
-	@GetMapping("/name/{name}")
-	public List<EventResponse> getEventsByName(@PathVariable String name) {
-		return EventResponse.of(eventService.getEventsByName(name));
+	@GetMapping("/{id}")
+	public List<EventResponse> getEventsById(@PathVariable long id) {
+		return EventResponse.of(eventService.getEventsById(id));
 	}
 
 	@Operation(summary = "Mostrar eventos que coincidan con un tipo de recinto dado", description = "Busca eventos en la BDD dado un tipo de recinto, devuelve una lista de  Event", tags= {"event"})

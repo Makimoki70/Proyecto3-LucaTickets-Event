@@ -79,6 +79,14 @@ public class EventService {
 	
 	/**
      * Método puente con EventRepository que pasa los datos de Event a la capa repository
+     * @return el listado de eventos actuales en el repository filtrado por id.
+     */
+	public List<Event> getEventsById(long id) {
+		return eventRepository.getEventsByid(id) ;
+	}
+	
+	/**
+     * Método puente con EventRepository que pasa los datos de Event a la capa repository
      * @return el listado de eventos actuales en el repository filtrado por nombre
      */
 	public List<Event> getEventsByName( String name) {

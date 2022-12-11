@@ -42,7 +42,7 @@ public class EventService {
      */
 	public Optional<Event> deleteById(Long id) {
 		Optional<Event> event  = eventRepository.findById(id);
-		if (!Optional.of(event).isEmpty()) {
+		if (!Optional.ofNullable(event).isEmpty()) {
 			eventRepository.deleteById(id);					
 		}		
 		return event;	
@@ -60,13 +60,19 @@ public class EventService {
 		}
 		return currentEvent;
 	}
+	
 	/**
      * Método puente con EventRepository que pasa los datos de Event a la capa repository
      * @return el objeto entity guardado (.save) en el repository
      */
-	public Event addEvent(Event event)
-	{		
-		return eventRepository.save(event);
+	public Optional<Event> addEvent(Event event){		
+		Optional<Event> currentEvent  = eventRepository.findById(event.getId());
+		if (currentEvent.isEmpty())
+		{
+			currentEvent = Optional.of(eventRepository.save(event));
+		}else currentEvent = Optional.ofNullable(null);
+		
+		return currentEvent;
 	}
 	
 	/**
@@ -81,23 +87,27 @@ public class EventService {
      * Método puente con EventRepository que pasa los datos de Event a la capa repository
      * @return el listado de eventos actuales en el repository filtrado por id.
      */
-	public List<Event> getEventsById(long id) {
-		return eventRepository.getEventsByid(id) ;
+	public Optional<Event> getEventsById(long id) {
+		return eventRepository.findById(id);
 	}
 	
 	/**
      * Método puente con EventRepository que pasa los datos de Event a la capa repository
      * @return el listado de eventos actuales en el repository filtrado por nombre
      */
-	public List<Event> getEventsByName( String name) {
-		return eventRepository.getEventsByName(name) ;
+	public Optional<List<Event>> getEventsByName( String name) {
+		List<Event> events = eventRepository.getEventsByName(name);
+		if (events.isEmpty()) return Optional.ofNullable(null);
+		return Optional.of(events);
 	}
 	
 	/**
      * Método puente con EventRepository que pasa los datos de Event a la capa repository
      * @return el listado de eventos actuales en el repository filtrado por tipo
      */
-	public List<Event> getEventByType(String tipo){
-		return eventRepository.getEventsByType(tipo);
+	public Optional<List<Event>> getEventsByType(String tipo){
+		List<Event> events = eventRepository.getEventsByType(tipo);
+		if (events.isEmpty()) return Optional.ofNullable(null);
+		return Optional.of(events);
 	}
 }

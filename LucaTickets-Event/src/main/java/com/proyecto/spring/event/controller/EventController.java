@@ -84,7 +84,7 @@ public class EventController {
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
 		return ResponseEntity.created(location).body(result);
 	}
-	
+
 	@Operation(summary = "Mostrar todos los eventos disponibles", description = "Busca todos los eventos de la BDD, devuelve una lista de Event", tags= {"event"})
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {

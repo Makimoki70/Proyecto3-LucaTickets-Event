@@ -125,6 +125,18 @@ public class EventController {
 		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException()));
 		return eventsResponse;
 	}
+	
+	@Operation(summary = "Mostrar eventos que coincidan con un id dado", description = "Busca eventos en la BDD dado un id, devulve una lista de Event", tags= {"id"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Eventos mostrados", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			@ApiResponse(responseCode = "400", description = "No válido (NO implementado) ", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = Event.class)) }),
+			})
+	@GetMapping("/{id}")
+	public List<EventResponse> getEventsById(@PathVariable long id) {
+		return EventResponse.of(eventService.getEventsById(id));
+	}
 
 	@Operation(summary = "Mostrar eventos que coincidan con un tipo de recinto dado", description = "Busca eventos en la BDD dado un tipo de recinto, devuelve una lista de  Event", tags= {"event"})
 	@ApiResponses(value = {

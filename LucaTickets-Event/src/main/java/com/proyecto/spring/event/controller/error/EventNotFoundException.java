@@ -7,6 +7,9 @@ public class EventNotFoundException extends RuntimeException{
 		super("Error: No existe ese evento");
 	}
 	public EventNotFoundException(Long id){
-		super("Ups: No existe el evento "+id);
+		super("Error: No existe el evento "+id);
+	}
+	public EventNotFoundException(String s){
+		super("Error: No existen eventos que contengan: " + s);
 	}
 }

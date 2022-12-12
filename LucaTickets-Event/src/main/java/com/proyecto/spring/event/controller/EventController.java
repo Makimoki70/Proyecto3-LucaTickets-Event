@@ -107,7 +107,7 @@ public class EventController {
 	@PostMapping("/add")
 	public ResponseEntity<Event> addEvent(@RequestBody Event event)
 	{	
-		Event result = eventService.addEvent(event).orElseThrow(() -> new EventNotFoundException(event.getId()));
+		Event result = eventService.addEvent(event).orElseThrow(() -> new IllegalArgumentException("Ya hay un objeto con id " + event.getId()));
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
 		return ResponseEntity.created(location).body(result);
 	}
@@ -122,7 +122,7 @@ public class EventController {
 	@GetMapping("/name/{name}")
 	public List<EventResponse> getEventsByName(@PathVariable String name) {
 		Optional<List<Event>> events = eventService.getEventsByName(name);
-		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException()));
+		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException(name)));
 		return eventsResponse;
 	}
 	
@@ -153,7 +153,7 @@ public class EventController {
 		logger.info("------ readTipo (GET) ");
 		Optional<List<Event>> events = eventService.getEventsByType(tipo);
 		logger.info("----------------------- " + events);
-		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException()));
+		List<EventResponse> eventsResponse = EventResponse.of(events.orElseThrow(() -> new EventNotFoundException(tipo)));
 		return eventsResponse;
 	}
 }
